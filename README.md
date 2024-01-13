@@ -1,2 +1,2 @@
 # tasty-recipe
-my first Vue.js CLI project
+a webseite that i build using vue.js
