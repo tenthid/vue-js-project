@@ -28,7 +28,6 @@
             await store.dispatch("recipe/getRecipeData" );
             recipeListStatus. value = true;
             recipeList. value = store.state.recipe.recipes;
-            console.log(recipeList)
         } catch (error) {
             console.log(error);
         }

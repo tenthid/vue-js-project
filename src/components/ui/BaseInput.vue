@@ -1,20 +1,55 @@
 <template>
     <div>
-        <label :for="identity" class="fw-semibold">
+        <label :for="identity" class="fw-semibold"> 
             {{ label }} <span style="color: #cb3a31" >*</span>
-            <input :type="type" :class="[{ 'd-block': isImage}, 'form-control' ]" class="d-none">
+            <input :type="type" :class="[{ 'd-block': isImage }, 'form-control' ]" class="d-none">
             <slot></slot>
         </label>
-        <input 
+        <input
         :class="[{ 'd-none': isImage}, 'form-control' ]" 
         :type="type" :id="identity"
         :placeholder="placeholder" 
         :readonly="readonly === '1'"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
-        @keyup="$emit('keyInput', $event.target.value)"/>
+        @keyup="$emit('keyInput', $event.target.value)"
+        @focus="$emit('totalTimeFocus', $event.target.value)"/>
     </div>
 </template>
+
+<!-- <style scoped>
+    :class="{'input-wrapper': type == 'file'}"
+    , { 'file-input': type == 'file' }
+    .input-wrapper {
+        padding: 0.375rem 0.75rem;
+        width: 200px;
+        text-align: center;
+        align-items: center;
+        overflow: hidden;
+        position: relative;
+        cursor: pointer;
+        border: 1px solid #ced4da;
+        background-color: #ced4da;
+        border-radius: 0.375rem;
+        margin-bottom: 10px;
+        transition: all 1s ease;
+    }
+
+    .input-wrapper:hover {
+        background-color: #b9bec3;
+    }
+
+    .file-input {
+        cursor: pointer;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 99;
+        font-size: 50px;
+        opacity: 0;
+    }
+</style> -->
 
 <script setup>
     defineProps({

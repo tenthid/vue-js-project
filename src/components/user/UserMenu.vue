@@ -4,16 +4,16 @@
         <li class="list-group-item">
           <div class="d-flex align-items-center">
             <img
-              src=""
+              :src="userData.imageLink"
               alt="Profile"
-              width="36"
-              height="36"
+              width="60"
+              height="60"
               class="rounded-circle"
               style="object-fit: cover"
             />
             <div class="ps-3">
-              <p class="my-0 fs-5 fw-semibold">Jack Daniel</p>
-              <p class="my-0 fs-6 text-secondary">jackdaniel@mail.com</p>
+              <p class="my-0 fs-5 fw-semibold">{{userData.firstname}} {{ userData.lastname }}</p>
+              <p class="my-0 fs-6 text-secondary">{{ userData.email }}</p>
             </div>
           </div>
         </li>
@@ -23,6 +23,9 @@
         <li class="list-group-item user-menu" @click="menuClicked('favorite-recipe')">
           <i class="fas fa-heart pe-2"></i>Favorited Recipes
         </li>
+        <!-- <router-link :to="'/user/' + 'user-recipe'" class="list-group=item user-menu">
+          <i class="fa-solid fa-burger pe-2"></i>My Recipe
+        </router-link> -->
         <li class="list-group-item user-menu" @click="menuClicked('user-recipe')">
           <i class="fa-solid fa-burger pe-2"></i>My Recipe
         </li>
@@ -45,8 +48,17 @@
 </style>
 
 <script setup>
+    import { useStore } from 'vuex';
+    import { computed } from 'vue';
+
+    const store = useStore()
+    
     const emit = defineEmits(['changeComponent'])
     const menuClicked = option => {
         emit("changeComponent", option)
     }
+
+    const userData = computed(() => {
+        return store.state.auth.userLogin
+    })
 </script>

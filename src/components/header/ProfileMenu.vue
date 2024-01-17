@@ -13,13 +13,11 @@
             My Profile
           </a>
           <ul class="dropdown-menu">
-            <li class="dropdown-item">
-              <router-link class="text-decoration-none" to="/user" style="color: #1e2125;">Profile</router-link>
-            </li>
-            <li class="dropdown-item">Favorited Recipes</li>
-            <li class="dropdown-item">My Recipes</li>
+            <router-link class="text-decoration-none dropdown-item" to="/user/personal-info" style="color: #1e2125;">Profile</router-link>
+            <router-link class="text-decoration-none dropdown-item" to="/user/favorite-recipe" style="color: #1e2125;">Favoriteed Recipe</router-link>
+            <router-link class="text-decoration-none dropdown-item" to="/user/user-recipe" style="color: #1e2125;">My Recipe</router-link>
             <li><hr class="dropdown-divider" /></li>
-            <li @click="logout" class="dropdown-item">Logout</li>
+            <li style="cursor: pointer;" @click="logout" class="dropdown-item">Logout</li>
           </ul>
         </li>
       </ul>

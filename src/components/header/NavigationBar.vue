@@ -23,14 +23,17 @@
     const getToken = computed(() => {
         return store.state.auth.token;
     })
+    const getLoginStatus = computed(() => {
+        return store.state.auth.isLogin
+    })
 
-    if (!getToken.value) {
+    if (!getToken.value && !getLoginStatus.value) {
         menuComponent.value = "signup-menu"
     } else {
         menuComponent.value = "profile-menu"
     }
 
-    watch(getToken, (newValue, oldValue) => {
+    watch(getToken && getLoginStatus, (newValue, oldValue) => {
         if (!newValue) {
             menuComponent.value = "signup-menu";
         } else {

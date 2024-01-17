@@ -1,14 +1,14 @@
 <template>
     <div class="container-md my-5 py-5">
         <div class="row">
-            <user-menu @changeComponent="$router.push($event)">
-                <div class="col-lg-9">
-                    <component :is="component[getRoute]"></component>
-                </div>
-            </user-menu>
+            <user-menu @changeComponent="$router.push('/user/' + $event)"></user-menu>
+            <div class="col-lg-9">
+                <component :is="component[getRoute]"></component> 
+                <!-- <favorite-recipe></favorite-recipe> -->
+            </div>
         </div>
     </div>
-</template>
+</template> 
 
 <script setup>
     import UserMenu from "../user/UserMenu.vue"
@@ -29,6 +29,4 @@
     const getRoute = computed (() => {
         return route.params.component
     })
-
-    console.log(route.params.component)
 </script>

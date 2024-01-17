@@ -28,7 +28,16 @@
 </template>
 
 <script setup>
+    import { useStore } from 'vuex';
+
+    const store = useStore()
+
     defineProps ({
         recipes: Array
     })
+
+    const addLike = (id) => {
+      const item = {id: id, like:true}
+      store.dispatch('addLike', item)
+    }
 </script>

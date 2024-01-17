@@ -17,12 +17,11 @@ export default {
             state.tokenExpirationDate = expiresIn;
             Cookies.set("tokenExpirationDate", expiresIn);
             Cookies.set("jwt", idToken);
+            console.log(expiresIn)
         },
         setUserLogin(state, { userData, loginStatus }) {
             state.userLogin = userData;
             state.isLogin = loginStatus;
-            console.log(userData)
-            console.log(loginStatus)
         },
         setUserLogout(state) {
             state.token = null
@@ -46,8 +45,8 @@ export default {
             console.log(payload.email)
             console.log(payload.password)
             try {
-                const { data } = await axios.post(authUrl, userData);
-                commit("setToken", {
+                const { data } = await axios.post(authUrl, userData);   
+                commit("setToken", {    
                     idToken: data.idToken,
                     expiresIn: new Date().getTime() + Number.parseInt(data.expiresIn) * 1000})
                 const newUserData = {
@@ -87,8 +86,9 @@ export default {
                 const { data } = await axios.post(authUrl, userData)
                 commit("setToken", {
                     idToken: data.idToken,
-                    expiresIn: new Date().getTime() + Number.parseInt(data.expiresIn) * 1000})
+                    expiresIn: new Date().getTime() + Number.parseInt(data.expiresIn) * 24000})
                 await dispatch("getUser", data.localId)
+                console.log(data.expiresIn)
             } catch(err) {
                 console.log(err)
             }
@@ -106,6 +106,29 @@ export default {
                 }
             } catch(err) {
                 console.log(err)
+            }
+        },
+        async checkCookies({ dispatch, commit, state }) {
+            const tokenExpirationDate = parseInt(Cookies.get('tokenExpirationDate'));
+            const jwtToken = Cookies.get('jwt');
+            const UID = Cookies.get('UID');
+
+            if (tokenExpirationDate && jwtToken && UID) {
+                if (tokenExpirationDate > new Date().getTime()) {
+                    try {
+                        await dispatch("getUser", UID)
+                        state.token = jwtToken
+                        console.log(`berhasil login dengan token ${state.token}`)
+                        console.log(`cookies akan exp pada ${new Date(tokenExpirationDate)}`)
+                    } catch(err) {
+                        console.log(err)
+                    }
+                } else {
+                    console.log(`yah skrg uda ${new Date()} cookies kamu exp pada ${new Date(tokenExpirationDate)}`);
+                    commit("setUserLogout")
+                }
+            } else {
+                console.log("ga ada data cookiesnya/ga dapet")
             }
         }
     }
