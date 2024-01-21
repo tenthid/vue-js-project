@@ -6,7 +6,6 @@ import UserPage from "./components/pages/UserPage.vue"
 import NewRecipePage from "./components/pages/NewRecipePage.vue"
 import EditRecipePage from "./components/pages/EditRecipePage.vue"
 import Cookies from "js-cookie"
-
 import { store } from "./store/index"
     
     export const routes = [
