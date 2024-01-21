@@ -27,6 +27,7 @@
 
 <script setup>
     import UserRecipeCard from "./UserRecipeCard.vue"
+    import { onMounted } from "vue";
     import { computed } from "vue";
     import { useStore } from "vuex";
     // import { useRouter } from "vue-router";
@@ -38,6 +39,10 @@
       const allRecipe = store.state.recipe.recipes
       const userId = store.state.auth.userLogin.userId
       return allRecipe.filter((recipe) => recipe.userId === userId)
+    })
+
+    onMounted(async () => {
+      await store.dispatch('recipe/getRecipeData')
     })
 
     // const editRecipe = (id) => {
