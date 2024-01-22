@@ -32,7 +32,7 @@
     const router = useRouter()
 
     const logout = () => {
-        // store.commit("auth/setUserLogout")
+        store.commit("auth/setUserLogout")
         store.dispatch("recipe/postLike")
         router.push("/")
     }
