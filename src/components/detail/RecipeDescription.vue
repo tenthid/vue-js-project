@@ -45,7 +45,7 @@
         </div>
       </div>
       <div class="ps-lg-4">
-        <img :src="recipeDetail.imageLink" alt="Food" class="recipe__detail-img rounded mx-auto" style="object-fit: cover"/>
+        <img :src="recipeDetail.imageLink" alt="Food" class="recipe__detail-img rounded mx-auto img-fluid" style="object-fit: cover"/>
       </div>
     </div>
 </template>
