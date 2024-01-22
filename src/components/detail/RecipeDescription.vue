@@ -39,8 +39,8 @@
         </div>
         <p class="my-3">Recipe By {{ recipeDetail.username }}</p>
         <div>
-          <button class="btn fav-btn px-3 py-2 rounded-pill">
-            <i class="far fa-heart pe-2"></i>Add To Favorite
+          <button @click="like" class="btn px-3 py-2 rounded-pill" :class="[recipeDetail.isLike? 'btn-outline-danger' : 'btn-outline-primary']">
+            <i class="far fa-heart pe-2"></i>{{ recipeDetail.isLike? "Remove From Favorite" : "Add To Favorite"}}
           </button>
         </div>
       </div>
@@ -53,10 +53,26 @@
 <script setup>
     import { computed } from 'vue';
     import { useStore } from "vuex";
+    import { useRoute } from 'vue-router';
 
     const store = useStore()
-    
+    const route = useRoute()
+
     const recipeDetail = computed(() => {
         return store.state.recipe.recipeDetail
     })
+
+    var btnIsLike = store.state.recipe.recipeDetail.isLike
+    
+    const like = () => {
+      console.log(recipeDetail.value.isLike)
+      recipeDetail.value.isLike = !recipeDetail.value.isLike
+      if (recipeDetail.value.isLike) {
+        store.dispatch("recipe/addLike", route.params.id)
+        console.log("ini add")
+      } else {
+        store.dispatch("recipe/removeLike", route.params.id)
+        console.log("ini remove")
+      }
+    }
 </script>

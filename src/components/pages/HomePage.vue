@@ -27,7 +27,7 @@
         try {
             await store.dispatch("recipe/getRecipeData" );
             recipeListStatus. value = true;
-            recipeList. value = store.state.recipe.recipes;
+            recipeList.value = store.state.recipe.recipes;
         } catch (error) {
             console.log(error);
         }

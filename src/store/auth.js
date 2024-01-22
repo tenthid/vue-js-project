@@ -31,6 +31,7 @@ export default {
             Cookies.remove("jwt");
             Cookies.remove("tokenExpirationDate");
             Cookies.remove("UID");
+            localStorage.removeItem("likedContent");
         }
     },
     actions: {

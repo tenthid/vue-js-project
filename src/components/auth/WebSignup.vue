@@ -88,7 +88,7 @@
         confirmationPassword: "",
         isLogin: false,
         imageLink: "",
-        likedList: []
+        likedList: ["null"]
     })
 
     const debug1 = () => {

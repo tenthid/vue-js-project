@@ -16,5 +16,6 @@ const router = createRouter({
 
 await store.dispatch("auth/checkCookies")
 await store.dispatch("recipe/getRecipeData")
+await store.dispatch("recipe/getLike")
 
 createApp(App).use(router).use(store).mount('#app')

@@ -1,6 +1,6 @@
 <template>
     <div class="recipe__list-recipe row">
-        <div v-for="recipe in recipes" class="col-12 col-lg-3 col-sm-4 position-relative" style="padding-top: 12px; padding-bottom: 12px">
+        <div v-for="(recipe, id) in recipes" :key="id" class="col-12 col-lg-3 col-sm-4 position-relative" style="padding-top: 12px; padding-bottom: 12px">
             <router-link class="text-decoration-none" :to="'/recipe/'+recipe.id">
                 <div class="card text-decoration-none" style="height: 398px">
                   <img
@@ -19,25 +19,53 @@
                     <p>Recipe By {{ recipe.username }}</p>
                   </div>
                 </div>
-                <div class="position-absolute text-secondary bg-light px-2 py-1 rounded-circle top-0 end-0 m-4 like-icon">
-                  <i class="fas fa-heart"></i>
+              </router-link>
+                <div @click="like(id)" style="z-index: 99;" class="position-absolute text-secondary bg-light px-2 py-1 rounded-circle top-0 end-0 m-4 like-icon">
+                  <div v-if="recipe.isLike === true">
+                    <i style="cursor: pointer;" class="fa-fw fa-solid fa-heart"></i>
+                  </div>
+                  <div v-else>
+                    <i style="cursor: pointer;" class="fa-fw fa-regular fa-heart"></i>
+                  </div>
                 </div>
-            </router-link>
         </div>
     </div>
 </template>
 
 <script setup>
+    import recipe from '@/recipe';
+    import { onMounted } from 'vue';
     import { useStore } from 'vuex';
 
     const store = useStore()
 
-    defineProps ({
+    const props = defineProps({
         recipes: Array
     })
+    // defineProps ({
+    //     recipes: Array
+    // })
+    
+    const recipes = props.recipes
 
-    const addLike = (id) => {
-      const item = {id: id, like:true}
-      store.dispatch('addLike', item)
+    const like = (id) => {
+      recipes[id].isLike = !recipes[id].isLike
+      console.log(id)
+      // localStorage.removeItem('likedContent')
+      if (recipes[id].isLike) {
+        console.log('like')
+        store.dispatch('recipe/addLike', recipes[id].id)
+      } else {
+        console.log('dislike')
+        store.dispatch('recipe/removeLike', recipes[id].id)
+      }
     }
+
+    onMounted(async () => {
+      const likedContent = store.state.recipe.like
+      recipes.forEach(recipeItem => {
+        recipeItem.isLike = likedContent.some(likedItem => likedItem.id === recipeItem.id);
+      });
+    })
+  
 </script>
