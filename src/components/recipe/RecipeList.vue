@@ -62,10 +62,10 @@
     }
 
     onMounted(async () => {
-      const likedContent = store.state.recipe.like
+      await store.dispatch('recipe/getLike')
+      const likedContent = await store.state.recipe.like
       recipes.forEach(recipeItem => {
         recipeItem.isLike = likedContent.some(likedItem => likedItem.id === recipeItem.id);
       });
     })
-  
 </script>

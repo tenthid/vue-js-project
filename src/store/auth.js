@@ -63,11 +63,12 @@ export default {
         },
 
         async addNewUser({ commit, state }, payload) {
+            const user = {...payload, likedList: ['null']}
             try {
                 const { data } = await axios.post(
                 `https://vue-js-project-67129-default-rtdb.firebaseio.com/user.json?auth=${
-                state.token}`, payload);
-                commit("setUserLogin", {userData: payload, loginStatus: true})
+                state.token}`, user);
+                commit("setUserLogin", {userData: user, loginStatus: true})
             } catch (err) {
                 console.log(err);
                 console.log(state.userLogin)
