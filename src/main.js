@@ -23,6 +23,7 @@ setInterval(async () => {
     if (userKey !== undefined) {
         // console.log("data like terkirim")
         await store.dispatch("recipe/postLike")
+        localStorage.removeItem("likedContent")
         await store.dispatch("recipe/getLike")
     } else {
         // console.log("tidak ada cookies")
