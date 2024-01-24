@@ -5,6 +5,8 @@ import DetailPage from "./components/pages/DetailPage.vue"
 import UserPage from "./components/pages/UserPage.vue"
 import NewRecipePage from "./components/pages/NewRecipePage.vue"
 import EditRecipePage from "./components/pages/EditRecipePage.vue"
+import NotFoundPage from "./components/pages/NotFoundPage.vue"
+import RecipeSearchPage from "./components/pages/RecipeSearchPage.vue"
 import Cookies from "js-cookie"
 import { store } from "./store/index"
     
@@ -56,6 +58,23 @@ import { store } from "./store/index"
         },
         {path: "/", name: "homePage", component: HomePage},
         {path: "/recipe/:id", name: "recipe", component: DetailPage},
-        {path: "/signup", name: "signup", component: SignupPage},
-        {path: "/login", name: "login", component: LoginPage}
+        {
+            path: "/signup", 
+            name: "signup", 
+            component: SignupPage,
+            beforeEnter: (to, from, next) => {
+                const loginStatus = store.state.auth.isLogin;
+                loginStatus? next("/") : next()
+            }
+        },
+        {
+            path: "/login", 
+            name: "login", component: LoginPage,
+            beforeEnter: (to, from, next) => {
+                const loginStatus = store.state.auth.isLogin;
+                loginStatus? next("/") : next()
+            } 
+        },
+        {path:"/recipe", name:"recipeSearch", component: RecipeSearchPage},
+        {path: '/:catchAll(.*)', name:"notFound", component: NotFoundPage}
 ]

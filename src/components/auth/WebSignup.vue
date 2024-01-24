@@ -88,12 +88,7 @@
         confirmationPassword: "",
         isLogin: false,
         imageLink: "",
-        likedList: ["null"]
     })
-
-    const debug1 = () => {
-      console.log("debug function bisa")
-    }
 
     const passwordStatusDisplay = ref("none")
 
@@ -111,7 +106,7 @@
     const confirmPasswordMatch = ref("none");
 
     const confirmationPasswordCheck = () => {
-      console.log("bisa kok")
+      // console.log("bisa kok")
       console.log(signupData.confirmationPassword)
       if (signupData.confirmationPassword === "") {
         confirmPasswordMatch.value = "none"

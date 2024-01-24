@@ -45,8 +45,10 @@
     })
 
     const login = async () => {
-      localStorage.removeItem('likedContent')
+      // localStorage.removeItem('likedContent')
       await store.dispatch("auth/getLoginData", loginData)
+      localStorage.removeItem("likedContent")
+      await store.dispatch("recipe/getLike")
       router.push("/")
     }
 </script>

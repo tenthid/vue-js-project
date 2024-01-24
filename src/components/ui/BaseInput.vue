@@ -1,6 +1,7 @@
 <template>
     <div>
         <label :for="identity" class="fw-semibold"> 
+
             {{ label }} <span style="color: #cb3a31" >*</span>
             <input :type="type" :class="[{ 'd-block': isImage }, 'form-control' ]" class="d-none">
             <slot></slot>

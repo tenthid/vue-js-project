@@ -17,11 +17,12 @@ export default {
             state.tokenExpirationDate = expiresIn;
             Cookies.set("tokenExpirationDate", expiresIn);
             Cookies.set("jwt", idToken);
-            console.log(expiresIn)
         },
-        setUserLogin(state, { userData, loginStatus }) {
+        setUserLogin(state, { userData, loginStatus, userId, key }) {
             state.userLogin = userData;
             state.isLogin = loginStatus;
+            Cookies.set("UID", userId)
+            Cookies.set("userKey", key)
         },
         setUserLogout(state) {
             state.token = null
@@ -31,6 +32,7 @@ export default {
             Cookies.remove("jwt");
             Cookies.remove("tokenExpirationDate");
             Cookies.remove("UID");
+            Cookies.remove("userKey")
             localStorage.removeItem("likedContent");
         }
     },
@@ -43,8 +45,8 @@ export default {
                 password: payload.password, 
                 returnSecureToken: true
             }
-            console.log(payload.email)
-            console.log(payload.password)
+            // console.log(payload.email)
+            // console.log(payload.password)
             try {
                 const { data } = await axios.post(authUrl, userData);   
                 commit("setToken", {    
@@ -62,13 +64,14 @@ export default {
             }   
         },
 
-        async addNewUser({ commit, state }, payload) {
+        async addNewUser({ commit, state, dispatch }, payload) {
             const user = {...payload, likedList: ['null']}
             try {
                 const { data } = await axios.post(
                 `https://vue-js-project-67129-default-rtdb.firebaseio.com/user.json?auth=${
                 state.token}`, user);
-                commit("setUserLogin", {userData: user, loginStatus: true})
+                await dispatch("getUser", user.userId)
+                // commit("setUserLogin", {userData: user, loginStatus: true})
             } catch (err) {
                 console.log(err);
                 console.log(state.userLogin)
@@ -90,7 +93,7 @@ export default {
                     idToken: data.idToken,
                     expiresIn: new Date().getTime() + Number.parseInt(data.expiresIn) * 24000})
                 await dispatch("getUser", data.localId)
-                console.log(data.expiresIn)
+                // console.log(data.expiresIn)
             } catch(err) {
                 console.log(err)
             }
@@ -100,9 +103,11 @@ export default {
                 const { data } = await axios.get("https://vue-js-project-67129-default-rtdb.firebaseio.com/user.json")
                 for (let key in data) {
                     if (data[key].userId === payload) {
-                        Cookies.set("UID", data[key].userId)
                         commit("setUserLogin", {
-                            userData: data[key], loginStatus: true
+                            userData: data[key], 
+                            loginStatus: true,
+                            userId: data[key].userId,
+                            key: key
                         })
                     }
                 }

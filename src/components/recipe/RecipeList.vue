@@ -33,8 +33,7 @@
 </template>
 
 <script setup>
-    import recipe from '@/recipe';
-    import { onMounted } from 'vue';
+    import { onMounted, computed } from 'vue';
     import { useStore } from 'vuex';
 
     const store = useStore()
@@ -46,25 +45,35 @@
     //     recipes: Array
     // })
     
-    const recipes = props.recipes
+    const recipes = computed(() => {
+        return props.recipes
+    })
+
+    // const recipes = props.recipes
+
+    // watch(props, (newValue, oldValue) => {
+    //   recipes.value = props.recipes
+    //   console.log(props.recipes)
+    // })
 
     const like = (id) => {
-      recipes[id].isLike = !recipes[id].isLike
+      recipes.value[id].isLike = !recipes.value[id].isLike
       console.log(id)
       // localStorage.removeItem('likedContent')
-      if (recipes[id].isLike) {
+      if (recipes.value[id].isLike) {
         console.log('like')
-        store.dispatch('recipe/addLike', recipes[id].id)
+        store.dispatch('recipe/addLike', recipes.value[id].id)
       } else {
         console.log('dislike')
-        store.dispatch('recipe/removeLike', recipes[id].id)
+        store.dispatch('recipe/removeLike', recipes.value[id].id)
       }
     }
 
     onMounted(async () => {
       await store.dispatch('recipe/getLike')
       const likedContent = await store.state.recipe.like
-      recipes.forEach(recipeItem => {
+      // console.log(recipes)
+      recipes.value.forEach(recipeItem => {
         recipeItem.isLike = likedContent.some(likedItem => likedItem.id === recipeItem.id);
       });
     })

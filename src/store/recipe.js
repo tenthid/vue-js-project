@@ -6,8 +6,8 @@ export default {
     state () {
         return {
             recipes: [],
-            like: [],
-            recipeDetail: {}
+            recipeDetail: {},
+            like: []
         }
     },
     getters: {
@@ -16,19 +16,19 @@ export default {
     mutations: {
         setRecipeData(state, payload) {
             state.recipes = payload
-            console.log(state.recipes)
+            // console.log(state.recipes)
         },
         setRecipeDetail(state, payload) {
             state.recipeDetail = payload
-            console.log(state.recipeDetail)
-            console.log(state.recipeDetail.isLike)
+            // console.log(state.recipeDetail)
+            // console.log(state.recipeDetail.isLike)
         },
         setNewRecipe(state, payload) {
             state.recipes.push(payload)
         },
         setLike(state, payload) {
             state.like = payload
-            console.log(payload)
+            // console.log(payload)
             localStorage.setItem('likedContent', JSON.stringify(payload))
         }
     },
@@ -44,7 +44,7 @@ export default {
                         // arr.push({id:key, ...data[key]})
                     }
                     commit("setRecipeData", recipeData)
-                    console.log("dapet kok data resepnya", recipeData)
+                    // console.log("dapet kok data resepnya", recipeData)
             } catch(err) {
                 console.log(err);
             }
@@ -52,7 +52,7 @@ export default {
         async getRecipeDetail({commit, state}, payload) {
             try {
                 const { data } = await axios.get(`https://vue-js-project-67129-default-rtdb.firebaseio.com/recipe/${payload}.json`)
-                console.log(payload) 
+                // console.log(payload) 
                 for (let key in state.like) {
                     if (state.like[key].id === payload) {
                         data.isLike = true;
@@ -73,7 +73,7 @@ export default {
             }
             try {
                 const { data } = await axios.post(`https://vue-js-project-67129-default-rtdb.firebaseio.com/recipe.json?auth=${rootState.auth.token}`, newData);
-                console.log(rootState.auth.token)
+                // console.log(rootState.auth.token)
                 commit("setNewRecipe", {id: data.name, newData})
             } catch(err) {
                 console.log(err)
@@ -99,65 +99,53 @@ export default {
             }
         },
         async addLike({ state, commit }, payload) {
-            const arr = state.like
-            arr.push({id: payload})
-            // commit("setLike", arr)
-            console.log(state.like)
-            commit("setLike", arr)
+            if (state.like !== null) {
+                const arr = state.like
+                arr.push({id: payload})
+                // commit("setLike", arr)
+                // console.log(state.like)
+                commit("setLike", arr)
+            } else {
+                const arr = []
+                arr.push({id: payload})
+                // commit("setLike", arr)
+                // console.log(state.like)
+                commit("setLike", arr)
+            }
         },
         async removeLike({ state, commit }, payload) {
             const arr = state.like
             for (let key in arr) {
                 if (arr[key].id === payload) {
-                    console.log("target"+arr[key].id)
+                    // console.log("target"+arr[key].id)
                     arr.splice(key, 1)
                 }
             }
             commit("setLike", arr)
         },
-        async postLike({ state, rootState, commit }) {
-            const UID = Cookies.get("UID")
-            const { data } = await axios.get(`https://vue-js-project-67129-default-rtdb.firebaseio.com/user.json`)
-            const user = data
+        async postLike({ state, rootState }) {
+            const userKey = Cookies.get("userKey")
             try {
-                for (let key in user ) {   
-                    if (user[key].userId === UID) {
-                        const { data } = await axios.put(`https://vue-js-project-67129-default-rtdb.firebaseio.com/user/${key}/likedList.json?auth=${rootState.auth.token}`, state.like)
-                        console.log(`https://vue-js-project-67129-default-rtdb.firebaseio.com/user/${key}/likedList.json?auth=${rootState.auth.token}, data ${state.like}`)
-                        localStorage.removeItem("likedContent")
-                        console.log(`https://vue-js-project-67129-default-rtdb.firebaseio.com/user/${key}/likedList.json?auth=${rootState.auth.token}, data ${state.like}`)
-                    }               
-                }
+                localStorage.removeItem("likedContent")
+                const { data } = await axios.put(`https://vue-js-project-67129-default-rtdb.firebaseio.com/user/${userKey}/likedList.json?auth=${rootState.auth.token}`, state.like)
             } catch(err) {
                 console.log(err)
             }
-            console.log('post like jalan')
+            // console.log('post like jalan')
         },
         async getLike({ commit }) {
             try {
-                const UID = Cookies.get("UID")
+                const userKey = Cookies.get("userKey")
                 const localStorageLikedContent = JSON.parse(localStorage.getItem('likedContent'))
                 if (localStorageLikedContent !== null) {
                     commit("setLike", localStorageLikedContent)
-                    console.log('dapet dari localstorage')
+                    // console.log('dapet dari localstorage')
                 } else {
-                    const { data } = await axios.get(`https://vue-js-project-67129-default-rtdb.firebaseio.com/user.json`)
-                    const user = data
-                    for (let key in user) {
-                        if (user[key].userId === UID) {
-                            const { data } = await axios.get(`https://vue-js-project-67129-default-rtdb.firebaseio.com/user/${key}/likedList.json`)
-                            commit("setLike", data)
-                            console.log('dapet dari database')
-                        }
-                        console.log('for untuk nyari user key jalan')
-                    }
-                    console.log('kondisi local storage null/undefined jalan, setemu data user '+ user)
+                    const { data } = await axios.get(`https://vue-js-project-67129-default-rtdb.firebaseio.com/user/${userKey}/likedList.json`)
+                    commit("setLike", data)
+                    // console.log('dapet dari database')
                 }
-                console.log('getlike jalan')
-                // try {
-                // } catch(err) {
-                //     console.log(err)
-                // }
+                // console.log('getlike jalan')
             } catch(err) {
                 console.log(err)
             }

@@ -14,7 +14,7 @@
           </a>
           <ul class="dropdown-menu">
             <router-link class="text-decoration-none dropdown-item" to="/user/personal-info" style="color: #1e2125;">Profile</router-link>
-            <router-link class="text-decoration-none dropdown-item" to="/user/favorite-recipe" style="color: #1e2125;">Favoriteed Recipe</router-link>
+            <router-link class="text-decoration-none dropdown-item" to="/user/favorite-recipe" style="color: #1e2125;">Favorited Recipe</router-link>
             <router-link class="text-decoration-none dropdown-item" to="/user/user-recipe" style="color: #1e2125;">My Recipe</router-link>
             <li><hr class="dropdown-divider" /></li>
             <li style="cursor: pointer;" @click="logout" class="dropdown-item">Logout</li>
@@ -33,7 +33,7 @@
 
     const logout = (async () => {
       await store.dispatch("recipe/postLike")
-      await store.commit("auth/setUserLogout")
+      store.commit("auth/setUserLogout")
       router.push("/")
       location.reload();
     })
