@@ -33,7 +33,7 @@
     })
 
     const searchResult = () => {
-        console.log(searchParam.value)
+        // console.log(searchParam.value)
             // const getParam = route.query.search
             if (searchParam.value !== undefined && searchParam.value !== '') {
                 paramDefined.value = true
@@ -41,9 +41,9 @@
                 recipes.value = allRecipe.filter(recipe =>
                     recipe.name.toLowerCase().includes(searchParam.value.toLowerCase())
                 );
-                console.log(recipes.value)
+                // console.log(recipes.value)
                 if (recipes.value.length === 0) {
-                    console.log('recipe ga ada')
+                    // console.log('recipe ga ada')
                     recipeFound.value = false
                 } else {
                     recipeFound.value = true
@@ -52,7 +52,7 @@
                 paramDefined.value = false
                 recipes.value = allRecipe
                 recipeFound.value = true
-                console.log("kondisi papramdefined false", recipes.value)
+                // console.log("kondisi papramdefined false", recipes.value)
             }
     }
 

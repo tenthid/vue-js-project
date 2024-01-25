@@ -62,17 +62,17 @@
         return store.state.recipe.recipeDetail
     })
 
-    var btnIsLike = store.state.recipe.recipeDetail.isLike
+    // var btnIsLike = store.state.recipe.recipeDetail.isLike
     
     const like = () => {
-      console.log(recipeDetail.value.isLike)
+      // console.log(recipeDetail.value.isLike)
       recipeDetail.value.isLike = !recipeDetail.value.isLike
       if (recipeDetail.value.isLike) {
         store.dispatch("recipe/addLike", route.params.id)
-        console.log("ini add")
+        // console.log("ini add")
       } else {
         store.dispatch("recipe/removeLike", route.params.id)
-        console.log("ini remove")
+        // console.log("ini remove")
       }
     }
 </script>

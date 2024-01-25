@@ -58,13 +58,13 @@
 
     const like = (id) => {
       recipes.value[id].isLike = !recipes.value[id].isLike
-      console.log(id)
+      // console.log(id)
       // localStorage.removeItem('likedContent')
       if (recipes.value[id].isLike) {
-        console.log('like')
+        // console.log('like')
         store.dispatch('recipe/addLike', recipes.value[id].id)
       } else {
-        console.log('dislike')
+        // console.log('dislike')
         store.dispatch('recipe/removeLike', recipes.value[id].id)
       }
     }

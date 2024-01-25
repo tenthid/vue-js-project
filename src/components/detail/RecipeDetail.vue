@@ -21,6 +21,6 @@
     onMounted(async() => {
         await store.dispatch("recipe/getRecipeDetail", route.params.id)
         detailStatus.value = true
-        console.log("detail dapet")
+        // console.log("detail dapet")
     })
 </script>
